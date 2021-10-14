@@ -106,6 +106,53 @@ def time_series(ts:pd.DataFrame, title) -> None:
     fig = px.line(ts, x=ts.index, y=ts, title=title)
     fig.show()
 
+def scatter_plot(df:pd.DataFrame, title:str, colorscale:str='blues', size:int=800) -> None:
+    dimensions = [dict(label=column, values=df[column]) for column in df.columns]
+
+    fig = go.Figure(data=go.Splom(
+        dimensions=dimensions,
+        showupperhalf=False,
+        diagonal_visible=False,
+        marker=dict(
+            showscale=False, 
+            colorscale=colorscale, 
+        ),
+    ))
+
+
+    fig.update_layout(
+        title=title,
+        width=size,
+        height=size,
+    )
+
+    fig.show()
+
+def scatter_plot_highlite(df:pd.DataFrame, column:str, title:str, colorscale:str='blues', size:int=800) -> None:
+    dimensions = [dict(label=column, values=df[column]) for column in df.columns]
+    index_vals = df[column]
+
+    fig = go.Figure(data=go.Splom(
+        dimensions=dimensions,
+        showupperhalf=False,
+        diagonal_visible=False,
+        marker=dict(
+            color=index_vals, 
+            showscale=True, 
+            colorscale=colorscale, 
+            colorbar={"title": column}
+        ),
+    ))
+
+
+    fig.update_layout(
+        title=title,
+        width=size,
+        height=size,
+    )
+
+    fig.show()
+
 # def class_distribution(y_train, class_names, title='', threshold=1000):
 #     # count per value
 #     values, counts = np.unique(y_train, return_counts=True)
